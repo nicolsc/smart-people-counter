@@ -58,26 +58,19 @@ void setup() {
 void loop() {
   long distance = takeMeasure();
   setLedStatus(distance);
-  if (distance <= 0){
-   if (DEBUG){
-     Serial.print("Something weird happened : ");
-     Serial.println(distance);
-   }
+  //Handle distance 0 as an "over the limit" info
+  if (STATE == WAITING_DEPARTURE && (distance <= 0 || distance >= TRIGGER_DISTANCE)){
+    STATE = WAITING_ARRIVAL;
+    data.count++;
+    Serial.print("Visitor #");
+    Serial.println(data.count);
   }
-  else{
-    if (distance >= TRIGGER_DISTANCE && STATE == WAITING_DEPARTURE){
-      STATE = WAITING_ARRIVAL;
-      data.count++;
-      Serial.print("Visitor #");
-      Serial.println(data.count);
+  else if (STATE == WAITING_ARRIVAL && (distance > 0 && distance < TRIGGER_DISTANCE)){
+    STATE = WAITING_DEPARTURE;
+    if (DEBUG){
+      Serial.println("Someone arrived");
     }
-    if (distance < TRIGGER_DISTANCE&& STATE == WAITING_ARRIVAL){
-      STATE = WAITING_DEPARTURE;
-      if (DEBUG){
-        Serial.println("Someone arrived");
-      }
-    }      
-  }
+  }      
   //Will send data .. or not. Depends on the time of last update
   sendData();
   delay(POLL_DELAY);
