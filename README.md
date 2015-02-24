@@ -16,6 +16,8 @@ Target was to do this using [http://snootlab.com](Snootlab)'s [Akeru Starter Kit
 * Wires :)
 * Breadboard || Soldering kit
 
+Beware ! The Akeru lib is using pins 4 & 5 to send data to the TD modem. Stay away from them ;)
+
 
 ##Software
 
