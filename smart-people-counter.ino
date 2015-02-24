@@ -132,13 +132,14 @@ int takeMeasure(){
 * RED light is object is close
 * GREEN if object if > distance
 **/
-boolean setLedStatus(int distance){
+void setLedStatus(int distance){
   if (distance <= 0){
-    //invalid
-    return false;
+    digitalWrite(GREEN_LED_PIN, HIGH);
+    digitalWrite(RED_LED_PIN, HIGH);
+    return;
   }
 
-  if (distance < 10){
+  if (distance < TRIGGER_DISTANCE){
    digitalWrite(GREEN_LED_PIN, HIGH);
    digitalWrite(RED_LED_PIN, LOW);
   }
