@@ -100,10 +100,15 @@ boolean sendData(){
   Serial.print("Sending counter (");
   Serial.print(data.count);
   Serial.println(") over Sigfox");
-  Akeru.send(&data, sizeof(data));
+  if (!Akeru.send(&data, sizeof(data))){
+    Serial.println("An error occured while sending message");
+    digitalWrite(SIGFOX_LED_PIN, LOW);
+    return false;
+  }
   timestamp = millis();
   digitalWrite(SIGFOX_LED_PIN, LOW);
   return true;
+  
 }
 
 int takeMeasure(){
