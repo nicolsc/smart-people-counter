@@ -26,16 +26,18 @@ struct sigfoxData {
 
 //App settings
 #define TRIGGER_DISTANCE 50
-#define SIGFOX_INTERVAL 15000*60 //ms. Send msg every 15 mins
+#define SIGFOX_INTERVAL 1000*10 //ms. Send msg every 15 mins
 
 
 int STATE;
 unsigned long timestamp;
+int prev_distance;
 
 void setup() {
   Serial.begin (SERIAL_BAUD);
   Akeru.begin();
   timestamp = millis();
+  prev_distance = 0;
   
   
   pinMode(TRIG_PIN, OUTPUT);
@@ -68,7 +70,6 @@ void loop() {
       data.count++;
       Serial.print("Visitor #");
       Serial.println(data.count);
-      sendData();
     }
     if (distance < TRIGGER_DISTANCE&& STATE == WAITING_ARRIVAL){
       STATE = WAITING_DEPARTURE;
@@ -77,16 +78,18 @@ void loop() {
       }
     }      
   }
+  //Will send data .. or not. Depends on the time of last update
+  sendData();
   delay(POLL_DELAY);
 }
 
 boolean sendData(){
   unsigned long diff = millis() - timestamp;
-  Serial.println("Is it time to send ?");
+  //Serial.println("Is it time to send ?");
   if (diff < SIGFOX_INTERVAL){
-    Serial.print("No, last message was sent ");
-    Serial.print(diff);
-    Serial.println("ms ago");
+    //Serial.print("No, last message was sent ");
+    //Serial.print(diff);
+    //Serial.println("ms ago");
     
     return false;
   }
@@ -125,9 +128,10 @@ int takeMeasure(){
   distance = (duration/2) / 29.41;
   
   
-  if (DEBUG){
+  if (DEBUG && prev_distance != distance){
     Serial.print("Distance ");
     Serial.println(distance);
+    prev_distance = distance;
   }
   return distance;
 }   
