@@ -36,6 +36,7 @@ int prev_distance;
 void setup() {
   Serial.begin (SERIAL_BAUD);
   Akeru.begin();
+  //Akeru.setPower(5);
   timestamp = millis();
   prev_distance = 0;
   
