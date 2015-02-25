@@ -5,7 +5,7 @@ struct sigfoxData {
 } data;
 
 
-#define DEBUG true
+#define DEBUG false
 
 #define SERIAL_BAUD 9600
 
