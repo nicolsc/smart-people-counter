@@ -26,7 +26,7 @@ struct sigfoxData {
 
 //App settings
 #define TRIGGER_DISTANCE 50
-#define SIGFOX_INTERVAL 15000*60 //ms. Send msg every 15 mins
+#define SIGFOX_INTERVAL 900000 //ms. Send msg every 15 mins
 
 
 int STATE;
