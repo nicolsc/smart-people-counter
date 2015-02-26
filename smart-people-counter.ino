@@ -7,6 +7,7 @@ struct sigfoxData {
 
 #define DEBUG false
 
+#define STARTUP_DELAY 2000
 #define SERIAL_BAUD 9600
 
 //pins
@@ -35,6 +36,9 @@ int prev_distance;
 
 void setup() {
   Serial.begin (SERIAL_BAUD);
+  pinMode(SIGFOX_LED_PIN, OUTPUT);
+  digitalWrite(SIGFOX_LED_PIN, HIGH);
+  delay(STARTUP_DELAY); //Let the modem wake up gently
   Akeru.begin();
   //Akeru.setPower(5);
   timestamp = millis();
@@ -44,7 +48,6 @@ void setup() {
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
   
-  pinMode(SIGFOX_LED_PIN, OUTPUT);
   digitalWrite(SIGFOX_LED_PIN, LOW);
   
   pinMode(GREEN_LED_PIN, OUTPUT);
