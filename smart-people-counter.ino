@@ -28,7 +28,7 @@ struct sigfoxData {
 //App settings
 #define TRIGGER_DISTANCE 50
 #define SIGFOX_INTERVAL 900000 //ms. Send msg every 15 mins
-
+#define SIGFOX_POWER 3
 
 int STATE;
 unsigned long timestamp;
@@ -40,7 +40,7 @@ void setup() {
   digitalWrite(SIGFOX_LED_PIN, HIGH);
   delay(STARTUP_DELAY); //Let the modem wake up gently
   Akeru.begin();
-  //Akeru.setPower(5);
+  Akeru.setPower(SIGFOX_POWER);
   timestamp = millis();
   prev_distance = 0;
   
