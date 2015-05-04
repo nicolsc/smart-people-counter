@@ -56,7 +56,7 @@ bool Akeru_::isReady() {
 	// You've been warned!
 
     unsigned long currentTime = millis();
-    if(currentTime >= _lastSend && (currentTime - _lastSend) <= 60000) {
+    if(currentTime >= _lastSend && (currentTime - _lastSend) <= 600000) {
         return false;
     }
 
