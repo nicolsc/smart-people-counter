@@ -1,5 +1,6 @@
+#include <Akene.h>
+
 #include <SoftwareSerial.h>
-#include <Akeru.h>
 struct sigfoxData {
  int count;
 } data;
@@ -39,8 +40,8 @@ void setup() {
   pinMode(SIGFOX_LED_PIN, OUTPUT);
   digitalWrite(SIGFOX_LED_PIN, HIGH);
   delay(STARTUP_DELAY); //Let the modem wake up gently
-  Akeru.begin();
-  Akeru.setPower(SIGFOX_POWER);
+  Akene.begin();
+  Akene.setPower(SIGFOX_POWER);
   timestamp = millis();
   prev_distance = 0;
   
@@ -90,7 +91,7 @@ boolean sendData(){
     
     return false;
   }
-  if (!Akeru.isReady()){
+  if (!Akene.isReady()){
       Serial.println("Cannot send Sigfox message right now"); 
       Serial.println("Probably due to the 1 msg per 10' limit enforced by the lib");
       return false;
@@ -100,7 +101,7 @@ boolean sendData(){
   Serial.print("Sending counter (");
   Serial.print(data.count);
   Serial.println(") over Sigfox");
-  if (!Akeru.send(&data, sizeof(data))){
+  if (!Akene.send(&data, sizeof(data))){
     Serial.println("An error occured while sending message");
     digitalWrite(SIGFOX_LED_PIN, LOW);
     return false;

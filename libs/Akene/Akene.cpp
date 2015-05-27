@@ -1,23 +1,37 @@
-// Akeru library - http://akeru.cc
-//
-// copyleft Snootlab, 2014
-// this code is public domain, enjoy!
+/*
+This file is part of Akene library.
+Visit <http://snootlab.com>
+Copyright (C) 2013-2015 Snootlab. All rights reserved.
+
+Akene is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Akene is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Akene.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include <Arduino.h>
-#include "Akeru.h"
+#include "Akene.h"
 
-Akeru_ Akeru;
+Akene_ Akene;
 
-Akeru_::Akeru_() :
-    _serial(5, 4) {
+Akene_::Akene_() :
+    _serial(4, 5) { //Rx and Tx inverted compared to Akeru
      //Since _lastSend is unsigned, this is infinity
     _lastSend = -1;
 }
 
-Akeru_::~Akeru_() {	
+Akene_::~Akene_() {	
 }
 
-void Akeru_::begin() {
+void Akene_::begin() {
     _serial.begin(9600);
 
 
@@ -34,7 +48,7 @@ void Akeru_::begin() {
 }
 
 
-bool Akeru_::isReady() {
+bool Akene_::isReady() {
 
 	// IMPORTANT WARNING. PLEASE READ BEFORE MODIFYING THE CODE
 	//
@@ -70,7 +84,7 @@ bool Akeru_::isReady() {
     return _nextReturn() == OK;
 }
 
-bool Akeru_::send(const void* data, uint8_t len) {
+bool Akene_::send(const void* data, uint8_t len) {
 	uint8_t* bytes = (uint8_t*)data;
 
     if(!isReady()) {
@@ -98,7 +112,7 @@ bool Akeru_::send(const void* data, uint8_t len) {
     return false;
 }
 
-uint8_t Akeru_::getRev() {
+uint8_t Akene_::getRev() {
     _serial.write((uint8_t)'\0');
     _serial.write((uint8_t)'S');
     _serial.write((uint8_t)'F');
@@ -124,7 +138,7 @@ uint8_t Akeru_::getRev() {
     }
 }
 
-unsigned long Akeru_::getID() {
+unsigned long Akene_::getID() {
     _serial.write((uint8_t)'\0');
     _serial.write((uint8_t)'S');
     _serial.write((uint8_t)'F');
@@ -158,7 +172,7 @@ unsigned long Akeru_::getID() {
 //3 16dBm
 //4 18dBm
 //5 Max (18-19dBm)
-bool Akeru_::setPower(uint8_t power) {
+bool Akene_::setPower(uint8_t power) {
     power = power % 6; //It's 0-5
     _serial.write((uint8_t)'\0');
     _serial.write((uint8_t)'S');
@@ -170,7 +184,7 @@ bool Akeru_::setPower(uint8_t power) {
     return _nextReturn() == OK;
 }
 
-uint8_t Akeru_::_nextReturn() {
+uint8_t Akene_::_nextReturn() {
     while(!_serial.available());
     char fstChar = _serial.read();
     while(_serial.read() != ';');
